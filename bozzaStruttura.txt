@@ -1,0 +1,145 @@
+/progettoGym
+│── index.php
+│── config.php
+│── db.php
+│── /includes
+│     ├── header.php
+│     ├── footer.php
+│── /auth
+│     ├── login.php
+│     ├── register.php
+│     ├── logout.php
+│── /user
+│     ├── profile.php
+│     ├── follow.php
+│── /posts
+│     ├── create_post.php
+│     ├── feed.php
+│     ├── comment.php
+│     ├── post.php
+│     ├── like.php
+│── /workouts
+│     ├── create_workout.php
+│     ├── palestra.php
+│     ├── corsa.php
+│     ├── nuoto.php
+│     ├── gruppo_muscolare.php
+│── /assets
+│     ├── style.css
+│     ├── script.js
+│── /uploads
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+config = config.php è uno dei file più importanti in un progetto PHP: contiene tutte le impostazioni globali del sito,
+         cioè le variabili e le configurazioni comuni che altri file devono conoscere. 
+
+avvio sessione
+include del database
+costanti
+funzioni condivise
+impostazioni del server
+
+in ognia pagina: " require "config.php" "
+        
+<?php
+// AVVIO SESSIONE
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// NOME DEL SITO E URL BASE
+$site_name = "GymBruh";
+$base_url = "http://localhost/progettoGym/";
+
+// MOSTRARE ERRORI (solo in sviluppo)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// IMPOSTAZIONI GENERALI
+date_default_timezone_set("Europe/Rome");
+
+// INCLUDO FILE NECESSARI
+require_once __DIR__ . "/db.php";
+require_once __DIR__ . "/functions.php";
+?>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+index.php = È la pagina che viene caricata per prima
+
+<?php
+require_once "config.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: auth/login.php");
+    exit;
+}
+?>
+<h1>Benvenuto nel feed!</h1>
+
+Esempio di contenuti:
+navbar (header)
+lista dei post dei follow
+box per creare un nuovo post
+schede allenamento recenti
+storie (se le farai)
+sezione persone suggerite
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+db,php = Gestisce la connessione al database MySQL.
+
+<?php
+$conn = new PDO("mysql:host=localhost;dbname=gymbruh", "root", "");
+?>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+header.php = 
+
+apertura dell’HTML
+navbar
+logo
+eventuale menu
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+footer.php = 
+
+chiusura del body/HTML
+script
+copyright
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+login.php = 
+
+form email + password
+controlla nel database
+crea sessione
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+register.php
+
+username
+email
+password hashata (sicurezza)
+foto profilo (optional)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+logout.php = logout nga
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+profile.php = Mostra il profilo dell’utente
+
+foto
+bio
+post
+allenamenti
+bottone "segui"
+Questa è una pagina tipo Instagram / Facebook.
