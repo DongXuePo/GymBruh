@@ -1,7 +1,6 @@
 /progettoGym
 │── index.php
 │── config.php
-│── db.php
 │── /includes
 │     ├── header.php
 │     ├── footer.php
