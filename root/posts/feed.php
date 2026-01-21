@@ -6,9 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "root/auth/login.php");
     exit;
 }
-
-// QUERY: JOIN tra posts e users
-// NOTA: Ho usato i tuoi nomi (utente_id, data_pubblicazione)
 $sql = "SELECT p.*, u.username, u.avatar 
         FROM post p 
         JOIN users u ON p.utente_id = u.id 

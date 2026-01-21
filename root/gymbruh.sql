@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Dic 10, 2025 alle 09:56
+-- Creato il: Gen 21, 2026 alle 08:55
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -185,18 +185,23 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `bio` text DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `avatar` varchar(50) NOT NULL DEFAULT 'avatar1.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dump dei dati per la tabella `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password_hash`, `bio`, `is_admin`, `created_at`) VALUES
-(1, 'marco', 'hash1', 'Amo correre e nuotare', 0, '2025-12-10 08:16:27'),
-(2, 'lucia', 'hash2', 'Palestra ogni giorno!', 0, '2025-12-10 08:16:27'),
-(3, 'giulia', 'hash3', 'Nuoto e cardio', 0, '2025-12-10 08:16:27'),
-(4, 'admin', 'hash4', 'Amministratore', 1, '2025-12-10 08:16:27');
+INSERT INTO `users` (`id`, `username`, `password_hash`, `bio`, `is_admin`, `created_at`, `avatar`) VALUES
+(1, 'marco', 'hash1', 'Amo correre e nuotare', 0, '2025-12-10 08:16:27', 'avatar1.png'),
+(2, 'lucia', 'hash2', 'Palestra ogni giorno!', 0, '2025-12-10 08:16:27', 'avatar1.png'),
+(3, 'giulia', 'hash3', 'Nuoto e cardio', 0, '2025-12-10 08:16:27', 'avatar1.png'),
+(4, 'admin', 'hash4', 'Amministratore', 1, '2025-12-10 08:16:27', 'avatar1.png'),
+(5, 'caruso_edoardo', '$2y$10$iiDSPd.nifL2S/TIVaLFWu1lOVoMIzhMXCnw9YbyI0zzX4BIbUDQG', 'what the hell ooo m gawd', 0, '2026-01-07 07:24:25', 'avatar1.png'),
+(6, 'test12', '$2y$10$aWoWqc64uGSfdppG6cStwuOSX0Awa683Zp7CQPLzjiSJ0Fv9OwxoC', 'Palestra dd', 0, '2026-01-12 08:55:08', 'avatar1.png'),
+(7, 'nuovo_utentetest', '$2y$10$eJMXO/nuDCP4gltHUrymMOMVvecjD3hnTa2nnIdAwtnemKA/n49Ba', 'Test dadadada', 0, '2026-01-21 07:31:00', 'avatar1.png'),
+(8, 'testab', '$2y$10$XTh0gMnPNiSPzhh2QIj9SuUgaEuvH5CtZVzOh49Dr9gulMkEs476y', '', 0, '2026-01-21 07:49:28', 'avatar1.png');
 
 -- --------------------------------------------------------
 
@@ -389,7 +394,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT per la tabella `workouts`
