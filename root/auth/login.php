@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $user['username'];
         $_SESSION['avatar'] = $user['avatar'];
 
-        header("Location: " . BASE_URL . "posts/feed.php");
+        header("Location: " . BASE_URL . "root/posts/feed.php");
         exit;
 
     } else {
