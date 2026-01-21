@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-    <?php include "../includes/header.php"; ?>
+
 
     <div class="container" style="margin-top: 50px; max-width: 500px; margin-left: auto; margin-right: auto;">
         
