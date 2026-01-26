@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 21, 2026 alle 08:55
+-- Creato il: Gen 26, 2026 alle 09:55
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -42,7 +42,9 @@ CREATE TABLE `commento` (
 INSERT INTO `commento` (`id`, `post_id`, `utente_id`, `testo`, `data_commento`) VALUES
 (1, 1, 2, 'Grande Marco!', '2025-12-10 09:24:02'),
 (2, 1, 3, 'Complimenti!', '2025-12-10 09:24:02'),
-(3, 2, 1, 'Bravo! Continua così!', '2025-12-10 09:24:02');
+(3, 2, 1, 'Bravo! Continua così!', '2025-12-10 09:24:02'),
+(4, 9, 11, 'Grandissimo!', '2026-01-26 09:45:56'),
+(5, 9, 11, 'vero', '2026-01-26 09:47:58');
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,14 @@ CREATE TABLE `like_post` (
 INSERT INTO `like_post` (`id`, `post_id`, `utente_id`, `data_like`) VALUES
 (1, 1, 2, '2025-12-10 09:23:46'),
 (2, 1, 3, '2025-12-10 09:23:46'),
-(3, 2, 1, '2025-12-10 09:23:46');
+(3, 2, 1, '2025-12-10 09:23:46'),
+(6, 9, 10, '2026-01-26 09:44:23'),
+(8, 9, 11, '2026-01-26 09:55:08'),
+(9, 8, 11, '2026-01-26 09:55:10'),
+(10, 6, 11, '2026-01-26 09:55:11'),
+(11, 5, 11, '2026-01-26 09:55:14'),
+(12, 4, 11, '2026-01-26 09:55:16'),
+(13, 1, 11, '2026-01-26 09:55:21');
 
 -- --------------------------------------------------------
 
@@ -171,7 +180,12 @@ CREATE TABLE `post` (
 INSERT INTO `post` (`id`, `utente_id`, `contenuto`, `workout_id`, `data_pubblicazione`) VALUES
 (1, 1, 'Oggi palestra top!', 1, '2025-12-10 09:23:23'),
 (2, 2, '5 km di corsa in strada!', 2, '2025-12-10 09:23:23'),
-(3, 3, '20 vasche a crawl!', 3, '2025-12-10 09:23:23');
+(3, 3, '20 vasche a crawl!', 3, '2025-12-10 09:23:23'),
+(4, 9, 'sddsadsada', 4, '2026-01-21 09:45:43'),
+(5, 9, 'd', 5, '2026-01-21 09:53:37'),
+(6, 10, 'BENE!', 6, '2026-01-26 09:06:40'),
+(8, 10, 'Bellissima nuotata alle piscine di giussano', 9, '2026-01-26 09:26:53'),
+(9, 10, 'Corsa alla porada, stavo morendo\r\n', 10, '2026-01-26 09:29:15');
 
 -- --------------------------------------------------------
 
@@ -201,7 +215,10 @@ INSERT INTO `users` (`id`, `username`, `password_hash`, `bio`, `is_admin`, `crea
 (5, 'caruso_edoardo', '$2y$10$iiDSPd.nifL2S/TIVaLFWu1lOVoMIzhMXCnw9YbyI0zzX4BIbUDQG', 'what the hell ooo m gawd', 0, '2026-01-07 07:24:25', 'avatar1.png'),
 (6, 'test12', '$2y$10$aWoWqc64uGSfdppG6cStwuOSX0Awa683Zp7CQPLzjiSJ0Fv9OwxoC', 'Palestra dd', 0, '2026-01-12 08:55:08', 'avatar1.png'),
 (7, 'nuovo_utentetest', '$2y$10$eJMXO/nuDCP4gltHUrymMOMVvecjD3hnTa2nnIdAwtnemKA/n49Ba', 'Test dadadada', 0, '2026-01-21 07:31:00', 'avatar1.png'),
-(8, 'testab', '$2y$10$XTh0gMnPNiSPzhh2QIj9SuUgaEuvH5CtZVzOh49Dr9gulMkEs476y', '', 0, '2026-01-21 07:49:28', 'avatar1.png');
+(8, 'testab', '$2y$10$XTh0gMnPNiSPzhh2QIj9SuUgaEuvH5CtZVzOh49Dr9gulMkEs476y', '', 0, '2026-01-21 07:49:28', 'avatar1.png'),
+(9, 'test123', '$2y$10$XuFNrPv/4CibFVjcJMVaje51evmkDUfOjfyFYyVMYBbk7nqP/fJGK', 'ddddd', 0, '2026-01-21 08:00:46', 'avatar1.png'),
+(10, 'colaninnoricky', '$2y$10$VsE2d4OUKkShFOf32FyiUOH6Wyie/0vYISMc/tv1Cq45lg/Fwg4zi', '', 0, '2026-01-26 08:06:08', 'avatar1.png'),
+(11, 'nuovotest', '$2y$10$Tm8B/3v4LV4TZnrPihMde.wVZt8zYK21teVqxvVDq52hHhgNaY74u', 'password: nuovotest', 0, '2026-01-26 08:45:47', 'avatar1.png');
 
 -- --------------------------------------------------------
 
@@ -223,7 +240,13 @@ CREATE TABLE `workouts` (
 INSERT INTO `workouts` (`id`, `utente_id`, `tipo`, `data`) VALUES
 (1, 1, 'palestra', '2025-12-10 00:00:00'),
 (2, 2, 'corsa', '2025-12-10 00:00:00'),
-(3, 3, 'nuoto', '2025-12-10 00:00:00');
+(3, 3, 'nuoto', '2025-12-10 00:00:00'),
+(4, 9, 'palestra', '2026-01-21 09:45:43'),
+(5, 9, 'palestra', '2026-01-21 09:53:37'),
+(6, 10, 'palestra', '2026-01-26 09:06:40'),
+(8, 10, 'nuoto', '2026-01-26 09:25:48'),
+(9, 10, 'nuoto', '2026-01-26 09:26:53'),
+(10, 10, 'corsa', '2026-01-26 09:29:15');
 
 -- --------------------------------------------------------
 
@@ -242,7 +265,8 @@ CREATE TABLE `workout_corsa` (
 --
 
 INSERT INTO `workout_corsa` (`workout_id`, `distanza_km`, `tempo_secondi`) VALUES
-(2, 5.00, 1500);
+(2, 5.00, 1500),
+(10, 10.00, 4740);
 
 -- --------------------------------------------------------
 
@@ -262,7 +286,9 @@ CREATE TABLE `workout_nuoto` (
 --
 
 INSERT INTO `workout_nuoto` (`workout_id`, `stile`, `distanza_m`, `tempo_secondi`) VALUES
-(3, 'crawl', 100, 60);
+(3, 'crawl', 100, 60),
+(8, 'Array', 0, 0),
+(9, 'Delfino', 1000, 160);
 
 -- --------------------------------------------------------
 
@@ -275,17 +301,25 @@ CREATE TABLE `workout_palestra_esercizi` (
   `workout_id` int(11) NOT NULL,
   `esercizio_id` int(11) NOT NULL,
   `sets` int(11) NOT NULL,
-  `reps` int(11) NOT NULL
+  `reps` int(11) NOT NULL,
+  `peso` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dump dei dati per la tabella `workout_palestra_esercizi`
 --
 
-INSERT INTO `workout_palestra_esercizi` (`id`, `workout_id`, `esercizio_id`, `sets`, `reps`) VALUES
-(1, 1, 1, 4, 10),
-(2, 1, 2, 3, 12),
-(3, 1, 3, 4, 8);
+INSERT INTO `workout_palestra_esercizi` (`id`, `workout_id`, `esercizio_id`, `sets`, `reps`, `peso`) VALUES
+(1, 1, 1, 4, 10, 0),
+(2, 1, 2, 3, 12, 0),
+(3, 1, 3, 4, 8, 0),
+(4, 4, 25, 1, 1, 0),
+(5, 4, 4, 1, 1, 0),
+(6, 4, 40, 1, 1, 0),
+(7, 4, 5, 1, 1, 0),
+(8, 5, 19, 1, 1, 0),
+(9, 6, 19, 3, 10, 0),
+(10, 6, 23, 5, 44, 0);
 
 --
 -- Indici per le tabelle scaricate
@@ -370,13 +404,13 @@ ALTER TABLE `workout_palestra_esercizi`
 -- AUTO_INCREMENT per la tabella `commento`
 --
 ALTER TABLE `commento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT per la tabella `like_post`
 --
 ALTER TABLE `like_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT per la tabella `list_gym_workout`
@@ -388,25 +422,25 @@ ALTER TABLE `list_gym_workout`
 -- AUTO_INCREMENT per la tabella `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT per la tabella `workouts`
 --
 ALTER TABLE `workouts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT per la tabella `workout_palestra_esercizi`
 --
 ALTER TABLE `workout_palestra_esercizi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Limiti per le tabelle scaricate

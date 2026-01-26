@@ -20,39 +20,42 @@ try {
 // 3. GESTIONE DEL SALVATAGGIO
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Ora questi sono ARRAY (liste di valori)
+    // Recuperiamo gli array dal form
     $esercizi_ids = $_POST['esercizio_id']; 
     $sets_list = $_POST['sets'];
     $reps_list = $_POST['reps'];
+    $peso_list = $_POST['peso']; // NUOVO ARRAY PER IL PESO
     
     $descrizione = $_POST['descrizione'];
 
-    // Controlliamo che almeno il primo esercizio e la descrizione ci siano
     if (!empty($esercizi_ids[0]) && !empty($descrizione)) {
         
         try {
             $pdo->beginTransaction();
 
-            // A. Creiamo il WORKOUT GENERICO (La "busta" che contiene tutto)
+            // A. Creiamo il WORKOUT GENERICO
             $sql_w = "INSERT INTO workouts (utente_id, tipo, data) VALUES (?, 'palestra', NOW())";
             $stmt_w = $pdo->prepare($sql_w);
             $stmt_w->execute([$_SESSION['user_id']]);
             $workout_id = $pdo->lastInsertId();
 
-            // B. Salviamo TUTTI GLI ESERCIZI (Ciclo For)
-            $sql_dettaglio = "INSERT INTO workout_palestra_esercizi (workout_id, esercizio_id, sets, reps) VALUES (?, ?, ?, ?)";
+            // B. Salviamo TUTTI GLI ESERCIZI (con il Peso)
+            // Aggiunto colonna 'peso' nella query
+            $sql_dettaglio = "INSERT INTO workout_palestra_esercizi (workout_id, esercizio_id, sets, reps, peso) VALUES (?, ?, ?, ?, ?)";
             $stmt_dettaglio = $pdo->prepare($sql_dettaglio);
 
-            // Giriamo su tutti gli esercizi aggiunti
             for ($i = 0; $i < count($esercizi_ids); $i++) {
                 
                 $es_id = $esercizi_ids[$i];
                 $s = $sets_list[$i];
                 $r = $reps_list[$i];
+                
+                // GESTIONE DEL PESO: Se è vuoto, mettiamo 0
+                $p = !empty($peso_list[$i]) ? $peso_list[$i] : 0;
 
-                // Salviamo solo se l'esercizio è stato selezionato
                 if (!empty($es_id)) {
-                    $stmt_dettaglio->execute([$workout_id, $es_id, $s, $r]);
+                    // Passiamo anche $p (peso)
+                    $stmt_dettaglio->execute([$workout_id, $es_id, $s, $r, $p]);
                 }
             }
 
@@ -111,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="esercizio-row">
                         <label>Esercizio:</label>
                         <select name="esercizio_id[]" style="width: 100%; padding: 8px; margin-bottom: 10px;" required>
-                            <option value="">Seleziona</option>
+                            <option value="">-- Seleziona --</option>
                             <?php foreach ($lista_esercizi as $es): ?>
                                 <option value="<?php echo $es['id']; ?>">
                                     <?php echo htmlspecialchars($es['name']); ?>
@@ -122,11 +125,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="display: flex; gap: 10px;">
                             <div style="flex: 1;">
                                 <label>Sets</label>
-                                <input type="number" name="sets[]" placeholder="4" style="width: 100%; padding: 8px;" required>
+                                <input type="number" name="sets[]" placeholder="Es: 4" style="width: 100%; padding: 8px;" required>
                             </div>
                             <div style="flex: 1;">
                                 <label>Reps</label>
-                                <input type="number" name="reps[]" placeholder="10" style="width: 100%; padding: 8px;" required>
+                                <input type="number" name="reps[]" placeholder="Es: 10" style="width: 100%; padding: 8px;" required>
+                            </div>
+                            <div style="flex: 1;">
+                                <label>Kg</label>
+                                <input type="number" name="peso[]" placeholder="0 se libero" step="0.5" style="width: 100%; padding: 8px;">
                             </div>
                         </div>
                     </div>
@@ -152,22 +159,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script>
         function aggiungiEsercizio() {
-            // 1. Prendo il contenitore
             const container = document.getElementById('esercizi-container');
-            
-            // 2. Prendo la prima riga come modello
             const primaRiga = container.getElementsByClassName('esercizio-row')[0];
-            
-            // 3. La clono
             const nuovaRiga = primaRiga.cloneNode(true);
             
-            // 4. Pulisco i valori dei campi nella nuova riga (così è vuota)
+            // Pulisco i valori (Select + 3 Input: Sets, Reps, Peso)
             const inputs = nuovaRiga.getElementsByTagName('input');
-            nuovaRiga.getElementsByTagName('select')[0].value = ""; // Resetta select
-            inputs[0].value = ""; // Resetta sets
-            inputs[1].value = ""; // Resetta reps
+            nuovaRiga.getElementsByTagName('select')[0].value = ""; 
             
-            // 5. La aggiungo in fondo
+            inputs[0].value = ""; // Sets
+            inputs[1].value = ""; // Reps
+            inputs[2].value = ""; // Peso
+            
             container.appendChild(nuovaRiga);
         }
     </script>
