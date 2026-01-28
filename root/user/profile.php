@@ -42,6 +42,7 @@ if ($is_me && isset($_POST['salva_bio'])) {
 }
 
 // 4. RECUPERA DATI PROFILO
+// Nota: qui usi 'following_id' per contare, quindi la colonna si chiama così!
 $sql_user = "SELECT u.*, 
             (SELECT COUNT(*) FROM post WHERE utente_id = u.id) as tot_posts,
             (SELECT COUNT(*) FROM follower WHERE following_id = u.id) as followers_count,
@@ -56,7 +57,10 @@ if (!$user) die("Utente non trovato.");
 // 5. SE NON SONO IO: CONTROLLO SE LO SEGUO GIÀ
 $ti_seguo = false;
 if (!$is_me) {
-    $stmt = $pdo->prepare("SELECT id FROM follower WHERE follower_id = ? AND followed_id = ?");
+    // *** CORREZIONE QUI SOTTO ***
+    // 1. Uso SELECT * (invece di id)
+    // 2. Uso following_id (invece di followed_id) perché è così nel tuo DB
+    $stmt = $pdo->prepare("SELECT * FROM follower WHERE follower_id = ? AND following_id = ?");
     $stmt->execute([$logged_user_id, $profile_id]);
     $ti_seguo = $stmt->fetch() ? true : false;
 }
@@ -132,12 +136,11 @@ $my_posts = $stmt_posts->fetchAll();
                     <div class="stat-label">Post</div>
                 </div>
                 <div class="stat-box">
-                <a href="lista_user.php?id=<?= $user['id'] ?>&type=follower" style="text-decoration: none; color: inherit;">
-                    <div class="stat-number"><?= $user['followers_count'] ?></div>
-                    <div class="stat-label">Follower</div>
-                </a>
+                    <a href="lista_user.php?id=<?= $user['id'] ?>&type=follower" style="text-decoration: none; color: inherit;">
+                        <div class="stat-number"><?= $user['followers_count'] ?></div>
+                        <div class="stat-label">Follower</div>
+                    </a>
                 </div>
-
                 <div class="stat-box">
                     <a href="lista_user.php?id=<?= $user['id'] ?>&type=following" style="text-decoration: none; color: inherit;">
                         <div class="stat-number"><?= $user['following_count'] ?></div>
@@ -169,11 +172,11 @@ $my_posts = $stmt_posts->fetchAll();
             <p><?= nl2br(htmlspecialchars($post['contenuto'])) ?></p>
             
             <?php if (!empty($post['workout_real_id'])): ?>
-                <a href="view_workout.php?id=<?= $post['workout_real_id'] ?>&tipo=<?= $post['tipo'] ?>" style="color:#007bff; text-decoration:none;">🔎 Vedi Scheda</a>
+                <a href="../posts/view_post.php?id=<?= $post['workout_real_id'] ?>&tipo=<?= $post['tipo'] ?>" style="color:#007bff; text-decoration:none;">🔎 Vedi Scheda</a>
             <?php endif; ?>
 
             <?php if ($is_me): ?>
-                <a href="cancella_post.php?id=<?= $post['id'] ?>" style="color:red; float:right;" onclick="return confirm('Eliminare?')">🗑️</a>
+                <a href="../posts/cancella_post.php?id=<?= $post['id'] ?>" style="color:red; float:right;" onclick="return confirm('Eliminare?')">🗑️</a>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>

@@ -49,11 +49,19 @@ $posts = $stmt->fetchAll();
         <div class="card post" style="margin-bottom: 25px; padding: 20px; border: 1px solid #ddd; background: #fff; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
 
             <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
-                <img src="<?php echo BASE_URL; ?>root/assets/img/avatars/<?php echo htmlspecialchars($post['avatar']); ?>"
-                     style="width:50px; height:50px; border-radius:50%; object-fit: cover; border: 2px solid #eee;">
+                
+                <a href="../user/profile.php?id=<?= $post['utente_id'] ?>">
+                    <img src="<?php echo BASE_URL; ?>root/assets/img/avatars/<?php echo htmlspecialchars($post['avatar']); ?>"
+                         style="width:50px; height:50px; border-radius:50%; object-fit: cover; border: 2px solid #eee;">
+                </a>
                 
                 <div>
-                    <div style="font-weight: bold; font-size: 1.1em;"><?= htmlspecialchars($post['username']) ?></div>
+                    <div style="font-weight: bold; font-size: 1.1em;">
+                        <a href="../user/profile.php?id=<?= $post['utente_id'] ?>" style="text-decoration: none; color: #333;">
+                            <?= htmlspecialchars($post['username']) ?>
+                        </a>
+                    </div>
+                    
                     <small style="color: #999;"><?= date("d/m/Y H:i", strtotime($post['data_pubblicazione'])) ?></small>
                 </div>
 
