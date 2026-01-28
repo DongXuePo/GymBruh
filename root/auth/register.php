@@ -1,37 +1,28 @@
 <?php
-// 1. CONFIGURAZIONE (SEMPRE PRIMA DI TUTTO)
 require_once "../config.php";
 
 $errore = "";
 
-// 2. LOGICA PHP (Gestione del click su "Registrati")
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Pulizia input
     $username = trim($_POST['username']);
     $password = $_POST['password'];
-    $bio = $_POST['bio']; 
-    $avatar_default = 'avatar1.png'; // Avatar predefinito
+    $bio = $_POST['bio'];
+    $avatar_default = 'avatar1.png';
 
-    // Controllo campi vuoti
     if (empty($username) || empty($password)) {
         $errore = "Compila username e password!";
     } else {
-        // Controllo se esiste già l'utente
         $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->execute([$username]);
-        
+
         if ($stmt->rowCount() > 0) {
             $errore = "Questo username è già preso. Scegline un altro.";
         } else {
-            // CREAZIONE UTENTE
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
             $sql = "INSERT INTO users (username, password_hash, bio, avatar) VALUES (?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
-            
+
             if ($stmt->execute([$username, $password_hash, $bio, $avatar_default])) {
-                // REGISTRAZIONE OK -> Manda al login con messaggio di successo
                 header("Location: login.php?msg=ok");
                 exit;
             } else {
@@ -47,42 +38,107 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Registrati - GymBruh</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f6f6f6, #e0e0e0);
+            font-family: Arial, sans-serif;
+        }
+        .register-container {
+            max-width: 450px;
+            margin: 60px auto;
+        }
+        .register-card {
+            background: #fff;
+            padding: 30px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .register-card:hover {
+            transform: translateY(-3px);
+        }
+        .register-card h2 {
+            text-align: center;
+            color: #111;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        .register-card input, 
+        .register-card textarea {
+            width: 100%;
+            padding: 12px 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .register-card input:focus,
+        .register-card textarea:focus {
+            outline: none;
+            border-color: #ff6b00;
+        }
+        .register-card button.btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff6b00;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .register-card button.btn:hover {
+            background: #e65c00;
+        }
+        .register-card .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .register-card .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .register-card .login-link a {
+            color: #ff6b00;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .register-card .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
+<div class="register-container">
+    <div class="register-card">
+        <h2>Unisciti al Team 💪</h2>
 
-
-    <div class="container" style="margin-top: 50px; max-width: 500px; margin-left: auto; margin-right: auto;">
-        
-        <h2 style="text-align: center;">Unisciti al Team 💪</h2>
-        
         <?php if ($errore): ?>
-            <p style="color: red; text-align: center; font-weight: bold;"><?php echo $errore; ?></p>
+            <div class="error"><?= $errore ?></div>
         <?php endif; ?>
 
-        <div class="card" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-            <form method="POST">
-                <label>Username</label><br>
-                <input type="text" name="username" style="width: 100%; padding: 8px;" required><br><br>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <textarea name="bio" placeholder="Breve Bio (opzionale)" rows="3" ></textarea>
 
-                <label>Password</label><br>
-                <input type="password" name="password" style="width: 100%; padding: 8px;" required><br><br>
 
-                <label>Breve Bio (Opzionale)</label><br>
-                <textarea name="bio" placeholder="Es: Amo il calisthenics..." style="width: 100%; padding: 8px;" rows="3"></textarea><br><br>
+            <button type="submit" class="btn">REGISTRATI</button>
+        </form>
 
-                <button type="submit" class="btn" style="width: 100%; padding: 10px; cursor: pointer;">REGISTRATI</button>
-            </form>
+        <div class="login-link">
+            Hai già un account? <a href="login.php">Accedi qui</a>
         </div>
-
-        <div style="text-align: center; margin-top: 15px;">
-            <p>Hai già un account? <a href="login.php">Accedi qui</a></p>
-        </div>
-
     </div>
+</div>
 
-    <?php include "../includes/footer.php"; ?>
-
+<?php include "../includes/footer.php"; ?>
 </body>
 </html>
