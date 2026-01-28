@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <header class="navbar">
     <div class="container">
         <strong>GymBruh</strong>
@@ -5,7 +11,7 @@
             <a href="<?php echo BASE_URL; ?>root/posts/feed.php">Feed</a>
             <a href="<?php echo BASE_URL; ?>root/user/profile.php">Profilo</a>
             <a href="<?php echo BASE_URL; ?>root/posts/create_post.php">Nuovo Post</a>
-            
+
             <?php if (!isset($_SESSION['user_id'])): ?>
                 <a href="<?php echo BASE_URL; ?>root/auth/login.php">Login</a>
             <?php else: ?>
