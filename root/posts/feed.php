@@ -1,9 +1,6 @@
-
 <?php
-// posts/feed.php
-require_once __DIR__ . "/../config.php"; 
+require_once __DIR__ . "/../config.php";
 
-// 1. PROTEZIONE: Se non sei loggato, vai al login
 if (!isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "root/auth/login.php");
     exit;
@@ -11,13 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// 2. QUERY INTELLIGENTE
-// Questa query recupera TUTTO in un colpo solo:
-// - Dati del post e dell'utente
-// - Tipo di allenamento (se esiste)
-// - Numero totale di like
-// - Se TU hai messo like (liked_by_me)
-// - Numero totale di commenti
+/* query */
 $sql = "SELECT p.*, u.username, u.avatar, w.tipo, w.id as workout_real_id,
         (SELECT COUNT(*) FROM like_post WHERE post_id = p.id) as num_likes,
         (SELECT COUNT(*) FROM like_post WHERE post_id = p.id AND utente_id = $user_id) as liked_by_me,
@@ -29,12 +20,22 @@ $sql = "SELECT p.*, u.username, u.avatar, w.tipo, w.id as workout_real_id,
 
 $stmt = $pdo->query($sql);
 $posts = $stmt->fetchAll();
-
-require_once __DIR__ . "/../includes/header.php";
 ?>
 
-<div class="container" style="max-width: 700px; margin-top: 20px;">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed - GymBruh</title>
+    
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>root/assets/style.css">
+</head>
+<body>
 
+<?php require_once __DIR__ . "/../includes/header.php"; ?>
+
+
+<div class="container" style="max-width: 700px; margin-top: 20px;">
     <h2>Feed Allenamenti 🔥</h2>
 
     <?php if (count($posts) === 0): ?>
