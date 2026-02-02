@@ -80,6 +80,24 @@ $posts = $stmt->fetchAll();
                 <?= nl2br(htmlspecialchars($post['contenuto'])) ?>
             </p>
 
+            <?php 
+                $post_imgs = [];
+                if (!empty($post['img1'])) $post_imgs[] = $post['img1'];
+                if (!empty($post['img2'])) $post_imgs[] = $post['img2'];
+                if (!empty($post['img3'])) $post_imgs[] = $post['img3'];
+            ?>
+
+            <?php if (count($post_imgs) > 0): ?>
+                <div style="display: flex; gap: 5px; margin-top: 15px; margin-bottom: 20px; overflow: hidden; border-radius: 8px;">
+                    <?php foreach ($post_imgs as $img): ?>
+                        <div style="flex: 1; height: 300px;">
+                            <img src="<?php echo BASE_URL; ?>root/assets/img/post/<?= htmlspecialchars($img) ?>" 
+                                 style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
+                                 onclick="window.open(this.src, '_blank');">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
             <div class="actions" style="border-top: 1px solid #eee; padding-top: 15px; display: flex; align-items: center; gap: 20px;">
                 
                 <?php 
