@@ -20,6 +20,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CONVERSIONE: Minuti -> Secondi (per il DB)
         $tempo_secondi = !empty($minuti) ? ($minuti * 60) : 0;
 
+        // --- GESTIONE IMMAGINI (Nuova Parte) ---
+        $immagini_caricate = [null, null, null]; // Array vuoto per img1, img2, img3
+        
+        if (isset($_FILES['immagini'])) {
+            $files = $_FILES['immagini'];
+            $count = count($files['name']);
+            
+            // Ciclo sui file (massimo 3)
+            for ($i = 0; $i < min($count, 3); $i++) {
+                if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                    $estensione = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+                    $permessi = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                    
+                    if (in_array($estensione, $permessi)) {
+                        // Nome unico: post_USERID_TIMESTAMP_INDEX.ext
+                        $nuovo_nome = "post_" . $_SESSION['user_id'] . "_" . time() . "_" . $i . "." . $estensione;
+                        $destinazione = __DIR__ . "/../assets/img/post/" . $nuovo_nome;
+                        
+                        if (move_uploaded_file($files['tmp_name'][$i], $destinazione)) {
+                            $immagini_caricate[$i] = $nuovo_nome;
+                        }
+                    }
+                }
+            }
+        }
+
         try {
             $pdo->beginTransaction();
 
@@ -29,13 +55,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $workout_id = $pdo->lastInsertId();
 
             // B. SALVA DETTAGLIO CORSA
-            // La tabella vuole: workout_id, distanza_km, tempo_secondi
             $stmt_corsa = $pdo->prepare("INSERT INTO workout_corsa (workout_id, distanza_km, tempo_secondi) VALUES (?, ?, ?)");
             $stmt_corsa->execute([$workout_id, $km, $tempo_secondi]);
 
-            // C. CREA POST SOCIAL
-            $stmt_post = $pdo->prepare("INSERT INTO post (utente_id, contenuto, workout_id, data_pubblicazione) VALUES (?, ?, ?, NOW())");
-            $stmt_post->execute([$_SESSION['user_id'], $descrizione, $workout_id]);
+            // C. CREA POST SOCIAL (Aggiornato con img1, img2, img3)
+            $sql_post = "INSERT INTO post (utente_id, contenuto, workout_id, img1, img2, img3, data_pubblicazione) 
+                         VALUES (?, ?, ?, ?, ?, ?, NOW())";
+            $stmt_post = $pdo->prepare($sql_post);
+            
+            $stmt_post->execute([
+                $_SESSION['user_id'], 
+                $descrizione, 
+                $workout_id,
+                $immagini_caricate[0],
+                $immagini_caricate[1],
+                $immagini_caricate[2]
+            ]);
 
             $pdo->commit();
             header("Location: " . BASE_URL . "root/posts/feed.php");
@@ -66,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if($errore): ?><p style="color: red;"><?php echo $errore; ?></p><?php endif; ?>
 
         <div class="card" style="padding: 20px;">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 
                 <div style="display: flex; gap: 20px; margin-bottom: 20px;">
                     <div style="flex: 1;">
@@ -85,6 +120,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h3>Descrizione Social</h3>
                 <textarea name="descrizione" rows="3" placeholder="Dove hai corso? Sensazioni?" style="width: 100%; padding: 8px;" required></textarea>
                 
+                <br><br>
+                <label>Aggiungi foto (max 3):</label>
+                <input type="file" name="immagini[]" multiple accept="image/*" style="display: block; margin-top: 5px;">
+
                 <br><br>
                 <button type="submit" class="btn" style="width: 100%;">PUBBLICA CORSA</button>
             </form>

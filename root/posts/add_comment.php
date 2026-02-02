@@ -6,9 +6,19 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Default: se qualcosa va storto, torna al feed
+$redirect_url = 'feed.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_id = $_POST['post_id'];
     $testo = trim($_POST['testo']);
+    
+    // --- MODIFICA FONDAMENTALE ---
+    // Recuperiamo l'indirizzo di ritorno dal campo nascosto <input type="hidden" name="back">
+    if (isset($_POST['back']) && !empty($_POST['back'])) {
+        $redirect_url = $_POST['back'];
+    }
+    // -----------------------------
     
     if (!empty($post_id) && !empty($testo)) {
         $stmt = $pdo->prepare("INSERT INTO commento (post_id, utente_id, testo, data_commento) VALUES (?, ?, ?, NOW())");
@@ -16,6 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Torniamo al Feed (o alla pagina commenti se preferisci)
-header("Location: feed.php");
+// Torniamo alla pagina dinamica
+header("Location: " . $redirect_url);
 exit;

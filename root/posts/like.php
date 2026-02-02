@@ -6,9 +6,15 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Prendiamo l'ID del post dal link (es. toggle_like.php?id=5)
+// Prendiamo l'ID del post dal link
 $post_id = $_GET['id'] ?? null;
 $user_id = $_SESSION['user_id'];
+
+// --- MODIFICA FONDAMENTALE ---
+// Controlliamo se c'è un indirizzo di ritorno specificato nell'URL
+// Se c'è (es: view_post.php?id=5...), usiamo quello. Altrimenti usiamo 'feed.php'.
+$redirect_url = $_GET['back'] ?? 'feed.php'; 
+// -----------------------------
 
 if ($post_id) {
     // 1. Controlliamo se il like esiste già
@@ -27,6 +33,6 @@ if ($post_id) {
     }
 }
 
-// Torniamo al Feed
-header("Location: feed.php");
+// Torniamo alla pagina dinamica (o Feed o Dettaglio)
+header("Location: " . $redirect_url);
 exit;
