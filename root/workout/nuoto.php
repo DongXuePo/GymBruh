@@ -102,15 +102,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <?php include "../includes/header.php"; ?>
 
-    <div class="container" style="max-width: 600px; margin-top: 30px;">
-        <h2>Registra Sessione Nuoto 🏊</h2>
-        <?php if($errore): ?><p style="color: red;"><?php echo $errore; ?></p><?php endif; ?>
+    <div class="container workout-container">
+        <h2 class="mb-20">Registra Sessione Nuoto 🏊</h2>
+        <?php if($errore): ?>
+            <p class="workout-error"><?= $errore ?></p>
+        <?php endif; ?>
 
-        <div class="card" style="padding: 20px;">
+        <div class="card workout-card">
             <form method="POST" enctype="multipart/form-data">
-                
+
                 <label>Stile:</label>
-                <select name="stile" style="width: 100%; padding: 8px; margin-bottom: 10px;" required>
+                <select name="stile" class="workout-select" required>
                     <option value="">-- Seleziona --</option>
                     <option value="Stile Libero">Stile Libero (Crawl)</option>
                     <option value="Dorso">Dorso</option>
@@ -120,33 +122,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="Tavoletta">Tavoletta / Gambe</option>
                 </select>
 
-                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                    <div style="flex: 1;">
+                <div class="workout-row">
+                    <div class="workout-group">
                         <label>Distanza Totale (m)</label>
-                        <input type="number" name="distanza" placeholder="es. 1000" style="width: 100%; padding: 8px;" required>
+                        <input type="number" name="distanza" placeholder="es. 1000" class="workout-input" required>
                     </div>
-                    <div style="flex: 1;">
+                    <div class="workout-group">
                         <label>Tempo Totale (sec)</label>
-                        <input type="number" name="tempo" placeholder="es. 1800" style="width: 100%; padding: 8px;">
+                        <input type="number" name="tempo" placeholder="es. 1800" class="workout-input">
                     </div>
                 </div>
 
                 <hr>
-                
-                <h3>Descrizione Social</h3>
-                <textarea name="descrizione" rows="3" placeholder="Com'era l'acqua? Sensazioni?" style="width: 100%; padding: 8px;" required></textarea>
-                
-                <br><br>
-                <label>Aggiungi foto (max 3):</label>
-                <input type="file" name="immagini[]" multiple accept="image/*" style="display: block; margin-top: 5px;">
 
-                <br><br>
-                <button type="submit" class="btn" style="width: 100%;">PUBBLICA</button>
+                <h3>Descrizione Social</h3>
+                <textarea name="descrizione" rows="3" placeholder="Com'era l'acqua? Sensazioni?" class="workout-textarea" required></textarea>
+
+                <label>Aggiungi foto (max 3):</label>
+                <input type="file" name="immagini[]" multiple accept="image/*" class="workout-file">
+
+<button type="submit" class="btn" style="width: 100%;">PUBBLICA</button>    
             </form>
         </div>
-        
-        <br>
-        <a href="<?php echo BASE_URL; ?>root/posts/create_post.php">← Indietro</a>
+
+        <a href="<?php echo BASE_URL; ?>root/posts/create_post.php" class="workout-back mt-20">← Indietro</a>
     </div>
 
     <?php include "../includes/footer.php"; ?>

@@ -86,80 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<style>
-    /* ===== WORKOUT CORSA FORM ===== */
 
-.workout-container {
-    max-width: 600px;
-    margin: 30px auto;
-}
-
-.workout-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 22px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-.workout-row {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.workout-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.workout-group label {
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.workout-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 1.2em;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.workout-textarea {
-    width: 100%;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.workout-file {
-    display: block;
-    margin-top: 5px;
-}
-
-.workout-btn {
-    width: 100%;
-}
-
-.workout-error {
-    color: red;
-    margin-bottom: 10px;
-}
-
-.workout-back {
-    display: inline-block;
-    margin-top: 10px;
-}
-
-</style>
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Workout Corsa</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>root/assets/style.css">
 </head>
 <body>
     <?php include "../includes/header.php"; ?>
@@ -188,8 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <hr>
-                
+
+                <br>                
                 <h3>Descrizione Social</h3>
                 <textarea name="descrizione" rows="3"
                           placeholder="Dove hai corso? Sensazioni?"
@@ -201,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        class="workout-file">
 
                 <br><br>
-                <button type="submit" class="btn workout-btn">PUBBLICA CORSA</button>
+                <button type="submit" class="btn" style="width: 100%;">PUBBLICA</button>
             </form>
         </div>
         

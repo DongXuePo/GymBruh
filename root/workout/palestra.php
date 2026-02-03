@@ -111,42 +111,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+
+
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Workout Palestra</title>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>root/assets/style.css">
-    <style>
-        .esercizio-row {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #eee;
-        }
-    </style>
+
 </head>
+
+
 <body>
 
     <?php include "../includes/header.php"; ?>
 
-    <div class="container" style="max-width: 700px; margin-top: 30px;">
+    <div class="container workout-container">
         <h2>Registra Allenamento: Palestra 🏋️</h2>
         
         <?php if($errore): ?>
-            <p style="color: red;"><?php echo $errore; ?></p>
+            <p class="workout-error"><?php echo $errore; ?></p>
         <?php endif; ?>
 
-        <div class="card" style="padding: 20px;">
+        <div class="card workout-card">
             <form method="POST" id="workoutForm" enctype="multipart/form-data">
                 
                 <h3>Scheda Allenamento</h3>
-                <div id="esercizi-container">
-                    
-                    <div class="esercizio-row">
-                        <label>Esercizio:</label>
-                        <select name="esercizio_id[]" style="width: 100%; padding: 8px; margin-bottom: 10px;" required>
+
+                <div id="esercizi-container" >
+                    <label>Esercizio:</label>
+                        <select name="esercizio_id[]" class="workout-input" required>
                             <option value="">-- Seleziona --</option>
                             <?php foreach ($lista_esercizi as $es): ?>
                                 <option value="<?php echo $es['id']; ?>">
@@ -154,42 +150,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                </div>
 
-                        <div style="display: flex; gap: 10px;">
-                            <div style="flex: 1;">
+                <div id="esercizi-container" >
+                    <div class="esercizio-row">
+
+
+                        <div class="workout-row input-flex">
+                            <div class="flex-1">
                                 <label>Sets</label>
-                                <input type="number" name="sets[]" placeholder="Es: 4" style="width: 100%; padding: 8px;" required>
+                                <input type="number" name="sets[]" placeholder="Es: 4" class="workout-input" required>
                             </div>
-                            <div style="flex: 1;">
+                            <div class="flex-1">
                                 <label>Reps</label>
-                                <input type="number" name="reps[]" placeholder="Es: 10" style="width: 100%; padding: 8px;" required>
+                                <input type="number" name="reps[]" placeholder="Es: 10" class="workout-input" required>
                             </div>
-                            <div style="flex: 1;">
+                            <div class="flex-1">
                                 <label>Kg</label>
-                                <input type="number" name="peso[]" placeholder="0 se libero" step="0.5" style="width: 100%; padding: 8px;">
+                                <input type="number" name="peso[]" placeholder="0 se libero" step="0.5" class="workout-input">
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <button type="button" onclick="aggiungiEsercizio()" class="btn" style="background: #eee; color: #333; width: 100%; margin-bottom: 20px;">
+                <button type="button" onclick="aggiungiEsercizio()" class="btn workout-btn" style="width: 100%">
                     + Aggiungi un altro esercizio
                 </button>
 
-                <hr>
+                <br>      <br>
 
                 <h3>Descrizione Social</h3>
-                <textarea name="descrizione" rows="3" placeholder="Com'è andata?" style="width: 100%; padding: 8px;" required></textarea>
+                <textarea name="descrizione" rows="3" placeholder="Com'è andata?" class="workout-textarea" required></textarea>
 
                 <br><br>
                 <label>Aggiungi foto (max 3):</label>
-                <input type="file" name="immagini[]" multiple accept="image/*" style="display: block; margin-top: 5px;">
+                <input type="file" name="immagini[]" multiple accept="image/*" class="workout-file">
 
                 <br><br>
-                <button type="submit" class="btn" style="width: 100%;">PUBBLICA WORKOUT</button>
+                <button type="submit" class="btn" style="width: 100%;">PUBBLICA</button>
             </form>
         </div>
+        
+        <a href="<?= BASE_URL ?>root/posts/create_post.php" class="workout-back">← Indietro</a>
     </div>
 
     <?php include "../includes/footer.php"; ?>

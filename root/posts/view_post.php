@@ -81,85 +81,85 @@ $lista_commenti = $stmt_comments->fetchAll();
     <meta charset="UTF-8">
     <title>Dettagli Allenamento - GymBruh</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>root/assets/style.css">
-    <style>
-        .social-section { margin-top: 30px; border-top: 1px solid #ddd; paddingTop: 20px; }
-        .comment-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        .comment-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
-        .comment-bubble { background: #f0f2f5; padding: 10px 15px; border-radius: 15px; font-size: 0.9em; flex: 1; }
-    </style>
+
+
+
 </head>
+
 <body>
 
 <?php require_once "../includes/header.php"; ?>
 
-<div class="container" style="max-width: 600px; margin-top: 30px;">
+<div class="container viewpost-container">
 
-    <h2>Dettagli: <?= ucfirst($tipo) ?> 📊</h2>
+    <h2 class="viewpost-title">Dettagli: <?= ucfirst($tipo) ?> 📊</h2>
 
-    <div class="card" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; background-color: #fffcf5;">
-        <h3 style="margin-top: 0; font-size: 1.1em;">Note dell'utente:</h3>
-        <p style="font-size: 1.1em; line-height: 1.6; font-style: italic; color: #333;">
+    <!-- Note utente -->
+    <div class="card note-card">
+        <h3 class="note-title">Note dell'utente:</h3>
+        <p class="note-text">
             <?= nl2br(htmlspecialchars($commento_utente)) ?>
         </p>
     </div>
 
+    <!-- Immagini post -->
     <?php 
         $post_imgs = [];
         if (!empty($post_data['img1'])) $post_imgs[] = $post_data['img1'];
         if (!empty($post_data['img2'])) $post_imgs[] = $post_data['img2'];
         if (!empty($post_data['img3'])) $post_imgs[] = $post_data['img3'];
     ?>
-
     <?php if (count($post_imgs) > 0): ?>
-        <div class="card" style="padding: 10px; margin-bottom: 20px; display: flex; gap: 10px; overflow-x: auto;">
+        <div class="card images-card">
             <?php foreach ($post_imgs as $img): ?>
                 <img src="<?= BASE_URL ?>root/assets/img/post/<?= htmlspecialchars($img) ?>" 
-                     style="height: 200px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer;"
+                     class="post-img"
                      onclick="window.open(this.src, '_blank');">
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 
+    <!-- Tabella dettagli workout -->
     <?php if (count($dettagli) > 0): ?>
-        <div class="card" style="padding: 0; overflow: hidden; border: 1px solid #ddd; border-radius: 8px;">
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead style="background: #f4f4f4;">
+        <div class="card table-card">
+            <table class="workout-table">
+                <thead>
                     <tr>
                         <?php if ($tipo === 'palestra'): ?>
-                            <th style="padding:12px; text-align:left;">Esercizio</th>
-                            <th style="padding:12px;">Sets</th>
-                            <th style="padding:12px;">Reps</th>
-                            <th style="padding:12px;">Kg</th>
+                            <th class="table-left">Esercizio</th>
+                            <th>Sets</th>
+                            <th>Reps</th>
+                            <th>Kg</th>
                         <?php elseif ($tipo === 'nuoto'): ?>
-                            <th style="padding:12px; text-align:left;">Stile</th>
-                            <th style="padding:12px;">Distanza</th>
-                            <th style="padding:12px;">Tempo</th>
+                            <th class="table-left">Stile</th>
+                            <th>Distanza</th>
+                            <th>Tempo</th>
                         <?php elseif ($tipo === 'corsa'): ?>
-                            <th style="padding:12px; text-align: center;">Distanza (Km)</th>
-                            <th style="padding:12px; text-align: center;">Tempo Totale</th>
-                            <th style="padding:12px; text-align: center;">Ritmo (min/km)</th>
+                            <th>Distanza (Km)</th>
+                            <th>Tempo Totale</th>
+                            <th>Ritmo (min/km)</th>
                         <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($dettagli as $row): ?>
-                        <tr style="border-bottom: 1px solid #eee; background: white;">
+                        <tr>
                             <?php if ($tipo === 'palestra'): ?>
-                                <td style="padding: 12px;">
+                                <td class="table-left">
                                     <strong><?= htmlspecialchars($row['name']); ?></strong><br>
-                                    <small style="color:#888;"><?= htmlspecialchars($row['muscles']); ?></small>
+                                    <small class="muscles"><?= htmlspecialchars($row['muscles']); ?></small>
                                 </td>
-                                <td style="padding:12px; text-align:center;"><?= $row['sets']; ?></td>
-                                <td style="padding:12px; text-align:center;"><?= $row['reps']; ?></td>
-                                <td style="padding:12px; text-align:center;"><?= ($row['peso'] > 0) ? $row['peso'] : '-'; ?></td>
+                                <td><?= $row['sets']; ?></td>
+                                <td><?= $row['reps']; ?></td>
+                                <td><?= ($row['peso'] > 0) ? $row['peso'] : '-'; ?></td>
                             <?php elseif ($tipo === 'nuoto'): ?>
-                                <td style="padding: 12px;"><strong><?= htmlspecialchars($row['stile']); ?></strong></td>
-                                <td style="padding:12px; text-align:center;"><?= $row['distanza_m']; ?> m</td>
-                                <td style="padding:12px; text-align:center;"><?= gmdate("i:s", $row['tempo_secondi']); ?> min</td>
+                                <td class="table-left"><strong><?= htmlspecialchars($row['stile']); ?></strong></td>
+                                <td><?= $row['distanza_m']; ?> m</td>
+                                <td><?= gmdate("i:s", $row['tempo_secondi']); ?> min</td>
                             <?php elseif ($tipo === 'corsa'): ?>
-                                <td style="padding: 12px; text-align:center; font-size: 1.2em; font-weight: bold;"><?= $row['distanza_km']; ?> km</td>
-                                <td style="padding:12px; text-align:center;"><?= gmdate("H:i:s", $row['tempo_secondi']); ?></td>
-                                <td style="padding:12px; text-align:center;">
+                                <td><?= $row['distanza_km']; ?> km</td>
+                                <td><?= gmdate("H:i:s", $row['tempo_secondi']); ?></td>
+                                <td>
                                     <?php 
                                         if ($row['distanza_km'] > 0 && $row['tempo_secondi'] > 0) {
                                             $ritmo_sec = $row['tempo_secondi'] / $row['distanza_km'];
@@ -177,27 +177,23 @@ $lista_commenti = $stmt_comments->fetchAll();
         </div>
     <?php endif; ?>
 
-    <div class="card" style="padding: 20px; margin-top: 20px;">
-        
-        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <?php 
-                $cuore_icon = $liked_by_me ? "❤️" : "🤍"; 
-                $cuore_style = $liked_by_me ? "color: #e0245e; font-weight:bold;" : "color: #555;";
-            ?>
-            <a href="like.php?id=<?= $post_id ?>&back=<?= $encoded_back_url ?>" style="text-decoration: none; font-size: 1.2em; <?= $cuore_style ?>">
-                <span style="font-size: 1.5em; vertical-align: middle;"><?= $cuore_icon ?></span> 
-                <?= $num_likes ?> Mi piace
+    <!-- Sezione social -->
+    <div class="card social-card">
+
+        <div class="social-row">
+            <?php $cuore_icon = $liked_by_me ? "❤️" : "🤍"; ?>
+            <a href="like.php?id=<?= $post_id ?>&back=<?= $encoded_back_url ?>" class="like-btn">
+                <span class="heart"><?= $cuore_icon ?></span> <?= $num_likes ?> Mi piace
             </a>
-            
-            <span style="color: #999;">•</span>
-            
-            <span style="color: #555; font-size: 1.1em;">
-                💬 <?= count($lista_commenti) ?> Commenti
-            </span>
+
+            <span class="dot">•</span>
+
+            <span class="comments-count">💬 <?= count($lista_commenti) ?> Commenti</span>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+        <hr>
 
+        <!-- Lista commenti -->
         <?php if (count($lista_commenti) > 0): ?>
             <?php foreach ($lista_commenti as $comm): ?>
                 <div class="comment-row">
@@ -205,42 +201,41 @@ $lista_commenti = $stmt_comments->fetchAll();
                         <img src="<?= BASE_URL ?>root/assets/img/avatars/<?= htmlspecialchars($comm['avatar']) ?>" class="comment-avatar">
                     </a>
                     <div class="comment-bubble">
-                        <a href="../user/profile.php?id=<?= $comm['user_id'] ?>" style="text-decoration: none; color: #333; font-weight: bold;">
+                        <a href="../user/profile.php?id=<?= $comm['user_id'] ?>" class="comment-username">
                             <?= htmlspecialchars($comm['username']) ?>
                         </a>
-                        <p style="margin: 5px 0;"><?= nl2br(htmlspecialchars($comm['testo'])) ?></p>
-                        <small style="color: #999; font-size: 0.8em;"><?= date("d/m H:i", strtotime($comm['data_commento'])) ?></small>
+                        <p><?= nl2br(htmlspecialchars($comm['testo'])) ?></p>
+                        <small class="comment-date"><?= date("d/m H:i", strtotime($comm['data_commento'])) ?></small>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p style="color: #999; font-style: italic;">Nessun commento ancora. Sii il primo!</p>
+            <p class="no-comments">Nessun commento ancora. Sii il primo!</p>
         <?php endif; ?>
 
-        <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <!-- Aggiungi commento -->
+        <div class="comment-input-row">
             <img src="<?= BASE_URL ?>root/assets/img/avatars/<?= $_SESSION['avatar'] ?? 'default.png' ?>" class="comment-avatar">
-            <form action="add_comment.php" method="POST" style="flex: 1; display: flex; gap: 10px;">
+            <form action="add_comment.php" method="POST" class="comment-form">
                 <input type="hidden" name="post_id" value="<?= $post_id ?>">
-                
                 <input type="hidden" name="back" value="<?= $current_page_url ?>">
 
-                <input type="text" name="testo" placeholder="Scrivi un commento..." required 
-                       style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none;">
-                <button type="submit" style="background: #007bff; color: white; border: none; padding: 0 15px; border-radius: 20px; cursor: pointer;">➤</button>
+                <input type="text" name="testo" placeholder="Scrivi un commento..." required class="comment-input">
+                <button type="submit" class="comment-btn">➤</button>
             </form>
         </div>
 
     </div>
-
+    <a href="feed.php" class="back-feed">← Torna al Feed</a>
 </div>
 
-<br>
 
-<a href="feed.php" 
-   style="display: inline-block; padding: 8px 12px; background: #007bff; color: #fff; border-radius: 4px; text-decoration: none; margin-bottom: 15px; transition: background 0.3s;">
-   ← Torna al Feed
-</a>
+
+
 
 <?php require_once "../includes/footer.php"; ?>
 </body>
+
+
+
 </html>

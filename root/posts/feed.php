@@ -27,144 +27,9 @@ $posts = $pdo->query($sql)->fetchAll();
     <title>Feed - GymBruh</title>
 
 <style>
-/* ===== FEED ===== */
 
-.container {
-    max-width: 720px;
-    margin: 30px auto;
-}
-
-.feed-title {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-/* POST CARD */
-.post {
-    background: #fff;
-    border-radius: 14px;
-    padding: 22px;
-    margin-bottom: 28px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-/* HEADER POST */
-.post-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.post-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.post-user a {
-    font-weight: 700;
-    color: #222;
-    text-decoration: none;
-}
-
-.post-date {
-    color: #888;
-    font-size: 0.85em;
-}
-
-.post-type {
-    margin-left: auto;
-    background: #f1f3f6;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: bold;
-}
-
-/* CONTENT */
-.post-content {
-    font-size: 1.05em;
-    line-height: 1.6;
-    margin-bottom: 18px;
-}
-
-/* IMAGES */
-.post-images {
-    display: flex;
-    gap: 6px;
-    overflow: hidden;
-    border-radius: 10px;
-    margin-bottom: 18px;
-}
-
-.post-images img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    cursor: pointer;
-}
-
-/* ACTIONS */
-.post-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 14px;
-}
-
-.post-actions a {
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-}
-
-.liked {
-    color: #e0245e;
-    font-weight: 700;
-}
-
-.view-workout {
-    margin-left: auto;
-    background: #007bff;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 0.9em;
-    font-weight: 700;
-}
-
-/* COMMENT FORM */
-.comment-box {
-    margin-top: 15px;
-    background: #f7f7f7;
-    padding: 12px;
-    border-radius: 10px;
-}
-
-.comment-box form {
-    display: flex;
-    gap: 10px;
-}
-
-.comment-box input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-.comment-box button {
-    background: #333;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 0 18px;
-    cursor: pointer;
-}
 </style>
+
 
 </head>
 <body>
@@ -176,7 +41,7 @@ $posts = $pdo->query($sql)->fetchAll();
     <h2 class="feed-title">Feed Allenamenti 🔥</h2>
 
     <?php foreach ($posts as $post): ?>
-        <div class="post">
+        <div class="card">
 
             <div class="post-header">
                 <a href="../user/profile.php?id=<?= $post['utente_id'] ?>">
