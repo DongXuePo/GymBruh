@@ -86,6 +86,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<style>
+    /* ===== WORKOUT CORSA FORM ===== */
+
+.workout-container {
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.workout-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.workout-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.workout-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.workout-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.workout-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.workout-textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.workout-file {
+    display: block;
+    margin-top: 5px;
+}
+
+.workout-btn {
+    width: 100%;
+}
+
+.workout-error {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.workout-back {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+</style>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -96,43 +164,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <?php include "../includes/header.php"; ?>
 
-    <div class="container" style="max-width: 600px; margin-top: 30px;">
+    <div class="container workout-container">
         <h2>Registra Corsa 🏃</h2>
-        <?php if($errore): ?><p style="color: red;"><?php echo $errore; ?></p><?php endif; ?>
 
-        <div class="card" style="padding: 20px;">
+        <?php if($errore): ?>
+            <p class="workout-error"><?= $errore ?></p>
+        <?php endif; ?>
+
+        <div class="card workout-card">
             <form method="POST" enctype="multipart/form-data">
                 
-                <div style="display: flex; gap: 20px; margin-bottom: 20px;">
-                    <div style="flex: 1;">
+                <div class="workout-row">
+                    <div class="workout-group">
                         <label>Distanza (Km)</label>
-                        <input type="number" name="km" step="0.01" placeholder="es. 5.5" style="width: 100%; padding: 10px; font-size: 1.2em;" required>
+                        <input type="number" name="km" step="0.01" placeholder="es. 5.5"
+                               class="workout-input" required>
                     </div>
                     
-                    <div style="flex: 1;">
+                    <div class="workout-group">
                         <label>Durata (Minuti)</label>
-                        <input type="number" name="minuti" placeholder="es. 45" style="width: 100%; padding: 10px; font-size: 1.2em;">
+                        <input type="number" name="minuti" placeholder="es. 45"
+                               class="workout-input">
                     </div>
                 </div>
 
                 <hr>
                 
                 <h3>Descrizione Social</h3>
-                <textarea name="descrizione" rows="3" placeholder="Dove hai corso? Sensazioni?" style="width: 100%; padding: 8px;" required></textarea>
+                <textarea name="descrizione" rows="3"
+                          placeholder="Dove hai corso? Sensazioni?"
+                          class="workout-textarea" required></textarea>
                 
                 <br><br>
                 <label>Aggiungi foto (max 3):</label>
-                <input type="file" name="immagini[]" multiple accept="image/*" style="display: block; margin-top: 5px;">
+                <input type="file" name="immagini[]" multiple accept="image/*"
+                       class="workout-file">
 
                 <br><br>
-                <button type="submit" class="btn" style="width: 100%;">PUBBLICA CORSA</button>
+                <button type="submit" class="btn workout-btn">PUBBLICA CORSA</button>
             </form>
         </div>
         
         <br>
-        <a href="<?php echo BASE_URL; ?>root/posts/create_post.php">← Indietro</a>
+        <a href="<?= BASE_URL ?>root/posts/create_post.php" class="workout-back">← Indietro</a>
     </div>
 
     <?php include "../includes/footer.php"; ?>
 </body>
+
 </html>
