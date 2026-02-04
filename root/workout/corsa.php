@@ -10,31 +10,26 @@ $errore = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Recuperiamo i dati
     $km = $_POST['km'];
-    $minuti = $_POST['minuti']; // L'utente scrive minuti
+    $minuti = $_POST['minuti'];
     $descrizione = $_POST['descrizione'];
 
     if (!empty($km) && !empty($descrizione)) {
         
-        // CONVERSIONE: Minuti -> Secondi (per il DB)
         $tempo_secondi = !empty($minuti) ? ($minuti * 60) : 0;
 
-        // --- GESTIONE IMMAGINI (Nuova Parte) ---
-        $immagini_caricate = [null, null, null]; // Array vuoto per img1, img2, img3
+        $immagini_caricate = [null, null, null];
         
         if (isset($_FILES['immagini'])) {
             $files = $_FILES['immagini'];
             $count = count($files['name']);
             
-            // Ciclo sui file (massimo 3)
             for ($i = 0; $i < min($count, 3); $i++) {
                 if ($files['error'][$i] === UPLOAD_ERR_OK) {
                     $estensione = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
                     $permessi = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
                     
                     if (in_array($estensione, $permessi)) {
-                        // Nome unico: post_USERID_TIMESTAMP_INDEX.ext
                         $nuovo_nome = "post_" . $_SESSION['user_id'] . "_" . time() . "_" . $i . "." . $estensione;
                         $destinazione = __DIR__ . "/../assets/img/post/" . $nuovo_nome;
                         
@@ -46,19 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        try {
+        try {    
+            //serve per non avere allenamenti vuoti o altro in caso di errori imprevisti
             $pdo->beginTransaction();
 
-            // A. CREA WORKOUT MADRE
             $stmt = $pdo->prepare("INSERT INTO workouts (utente_id, tipo, data) VALUES (?, 'corsa', NOW())");
             $stmt->execute([$_SESSION['user_id']]);
             $workout_id = $pdo->lastInsertId();
 
-            // B. SALVA DETTAGLIO CORSA
             $stmt_corsa = $pdo->prepare("INSERT INTO workout_corsa (workout_id, distanza_km, tempo_secondi) VALUES (?, ?, ?)");
             $stmt_corsa->execute([$workout_id, $km, $tempo_secondi]);
 
-            // C. CREA POST SOCIAL (Aggiornato con img1, img2, img3)
             $sql_post = "INSERT INTO post (utente_id, contenuto, workout_id, img1, img2, img3, data_pubblicazione) 
                          VALUES (?, ?, ?, ?, ?, ?, NOW())";
             $stmt_post = $pdo->prepare($sql_post);
@@ -72,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $immagini_caricate[2]
             ]);
 
+            //salva 
             $pdo->commit();
             header("Location: " . BASE_URL . "root/posts/feed.php");
             exit;

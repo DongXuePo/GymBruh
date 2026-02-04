@@ -12,12 +12,12 @@ $tipo = $_GET['tipo'] ?? 'palestra';
 
 if (!$workout_id) { die("Allenamento non trovato."); }
 
-// Costruiamo l'URL corrente per dire a Like e Commenti di tornare QUI e non al feed
-// Usiamo urlencode per evitare problemi con i caratteri speciali
+// costruzione url corrente per tornare qui e non al feed
+// urlencode per evitare problemi con i caratteri speciali
 $current_page_url = "view_post.php?id=" . $workout_id . "&tipo=" . $tipo;
 $encoded_back_url = urlencode($current_page_url);
 
-// 1. RECUPERIAMO DATI POST
+// RECUPERO DATI POST
 $sql_post = "SELECT id, contenuto, img1, img2, img3, data_pubblicazione FROM post WHERE workout_id = ?";
 $stmt_post = $pdo->prepare($sql_post);
 $stmt_post->execute([$workout_id]);
@@ -28,7 +28,7 @@ if (!$post_data) { die("Post non trovato."); }
 $post_id = $post_data['id']; 
 $commento_utente = $post_data['contenuto'] ?? "Nessuna descrizione.";
 
-// 2. RECUPERIAMO I DETTAGLI TECNICI
+// RECUPERO DETTAGLI TECNICI
 $dettagli = [];
 
 if ($tipo === 'palestra') {
@@ -53,18 +53,18 @@ if ($tipo === 'palestra') {
     $dettagli = $stmt->fetchAll();
 }
 
-// 3. RECUPERO DATI SOCIAL
-// A. Like totali
+// RECUPERO DATI SOCIAL
+// like totali
 $stmt_likes = $pdo->prepare("SELECT COUNT(*) FROM like_post WHERE post_id = ?");
 $stmt_likes->execute([$post_id]);
 $num_likes = $stmt_likes->fetchColumn();
 
-// B. Ho messo like?
+// controllo se ho messo like
 $stmt_me = $pdo->prepare("SELECT COUNT(*) FROM like_post WHERE post_id = ? AND utente_id = ?");
 $stmt_me->execute([$post_id, $current_user_id]);
 $liked_by_me = $stmt_me->fetchColumn() > 0;
 
-// C. Commenti
+// Commenti
 $sql_comments = "SELECT c.testo, c.data_commento, u.username, u.avatar, u.id as user_id 
                  FROM commento c 
                  JOIN users u ON c.utente_id = u.id 

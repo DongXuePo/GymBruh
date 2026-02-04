@@ -84,21 +84,7 @@ if (!isset($_SESSION['user_id'])) {
     color: #333;
 }
 
-/* RESPONSIVE */
-@media (max-width: 500px) {
-    .menu-card {
-        height: 160px;
-        padding: 25px 15px;
-    }
 
-    .icon {
-        font-size: 3em;
-    }
-
-    .label {
-        font-size: 1em;
-    }
-}
 </style>
 </head>
 <body>
